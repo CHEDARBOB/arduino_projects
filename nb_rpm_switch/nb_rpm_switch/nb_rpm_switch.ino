@@ -7,7 +7,15 @@ unsigned long period = 0;
 unsigned long falling_edge_a = 0;
 unsigned long falling_edge_b = 0;
 
+unsigned long calc_rpm(unsigned long edge_a, unsigned long edge_b){
+  unsigned long _period = edge_b - edge_a;
+  int _rpm = (60*1000)/period;
+  return rpm
+}
 
+open_valve(int _rpm){
+  
+}
 void setup() {
   pinMode(rpm_pin, INPUT);
   pinMode(vics_signal_out, OUTPUT);
@@ -25,10 +33,7 @@ void loop() {
   else if(rpm_pin == HIGH && edge_a == true){
    falling_edge_b = millis()
    edge_a = false;
-   period = calc_period(falling_edge_a, falling_edge_b);
+   rpm = calc_rpm(falling_edge_a, falling_edge_b);
+   open_valve(rpm);
   }
-}
-
-unsigned long calc_period(unsigned long edge_a, unsigned long edge_b){
-  
 }
