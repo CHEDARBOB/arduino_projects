@@ -42,8 +42,8 @@ void setup() {
  * First, HIGH rpm signal save current time in microseconds.
  * Second, LOW rpm signal, this ensures the system does not duplicate 
  * data for a singleton rpm signal.
- * Third, Following rpm HIGH signal. This represents the engine has traveled
- * 180 degrees.
+ * Third, Following rpm HIGH signal. save current time in microseconds.
+ * This represents the engine has traveled 180 degrees.
  * Fourth, following LOW rpm signal. bool states are reset and rpm is calculated.
  * VICS signal is set to LOW or HIGH based on engine rpm.
  */
