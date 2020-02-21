@@ -70,8 +70,8 @@ void loop() {
     reset = false;
     //rpm pin is LOW and both edges are valid. 
     //If overflow: entire sample ignored.
-    if(falling_edge_a < falling_edge_b)){
-      rpm = calc_rpm(falling_edge_a, falling_edge_b);
+    if(rising_edge_a < rising_edge_b){
+      rpm = calc_rpm(rising_edge_a, rising_edge_b);
       open_valve(rpm);
     }
   }
