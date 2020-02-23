@@ -33,6 +33,7 @@ void setup() {
   pinMode(vics_signal, OUTPUT);
   pinMode(vics_LED, OUTPUT);
   digitalWrite(vics_LED, LOW);
+  digitalWrite(vics_signal, LOW);
 }
 /*
  * rpm_signal fires twice per engine revolution. 
@@ -69,7 +70,7 @@ void loop() {
     edge_a = true;
     reset = false;
     //rpm pin is LOW and both edges are valid. 
-    //If overflow: entire sample ignored.
+    //If overflow, entire sample ignored.
     if(rising_edge_a < rising_edge_b){
       rpm = calc_rpm(rising_edge_a, rising_edge_b);
       open_valve(rpm);
