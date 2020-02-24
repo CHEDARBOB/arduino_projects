@@ -5,7 +5,6 @@ const int rpm_pin = 3;
 const int vics_signal = 4;
 const int vics_LED = LED_BUILTIN;
 const int desired_rpm = 5200;
-int rpm = 0;
 int rpm_signal = LOW;
 unsigned long rising_edge_a = 0;
 unsigned long rising_edge_b = 0;
@@ -55,11 +54,11 @@ void loop() {
     rising_edge_a = micros();
     edge_a = false;
   }
-  //state 1, LOW signal
+  //state 1, low signal
   else if(rpm_signal == LOW && (edge_a == false && edge_b == false && reset == false)){ 
     edge_b = true;
   }
-  //state 2, following HIGH signal set rising_edge_b (1/2 engine rotation)
+  //state 2, following High signal set rising_edge_b (1/2 engine rotation)
   else if(rpm_signal == HIGH && (edge_a == false && edge_b == true && reset == false)){
     rising_edge_b = micros();
     edge_b = false;
@@ -70,10 +69,10 @@ void loop() {
     edge_a = true;
     reset = false;
     //rpm pin is LOW and both edges are valid. 
-    //If overflow, entire sample ignored.
+    //If overflow: entire sample ignored.
     if(rising_edge_a < rising_edge_b){
-      rpm = calc_rpm(rising_edge_a, rising_edge_b);
-      open_valve(rpm);
+      _rpm = calc_rpm(rising_edge_a, rising_edge_b);
+      open_valve(_rpm);
     }
   }
 }
