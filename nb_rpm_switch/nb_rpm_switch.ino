@@ -6,6 +6,7 @@ const int vics_signal = 4;
 const int vics_LED = LED_BUILTIN;
 const int desired_rpm = 5200;
 int rpm_signal = LOW;
+int rpm = 0;
 unsigned long rising_edge_a = 0;
 unsigned long rising_edge_b = 0;
 
@@ -71,8 +72,8 @@ void loop() {
     //rpm pin is LOW and both edges are valid. 
     //If overflow: entire sample ignored.
     if(rising_edge_a < rising_edge_b){
-      _rpm = calc_rpm(rising_edge_a, rising_edge_b);
-      open_valve(_rpm);
+      rpm = calc_rpm(rising_edge_a, rising_edge_b);
+      open_valve(rpm);
     }
   }
 }
