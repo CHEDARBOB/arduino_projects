@@ -58,7 +58,7 @@ void loop() {
   else if(rpm_signal == LOW && (edge_a == false && edge_b == false && reset == false)){ 
     edge_b = true;
   }
-  //state 2, following High signal set rising_edge_b (1/2 engine rotation)
+  //state 2, following High signal, set rising_edge_b (1/2 engine rotation)
   else if(rpm_signal == HIGH && (edge_a == false && edge_b == true && reset == false)){
     rising_edge_b = micros();
     edge_b = false;
