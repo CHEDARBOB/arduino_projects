@@ -29,6 +29,7 @@ void open_valve(int _rpm){
 }
 
 void setup() {
+  Serial.begin(9600);
   pinMode(rpm_pin, INPUT);
   pinMode(vics_signal, OUTPUT);
   pinMode(vics_LED, OUTPUT);
@@ -50,7 +51,8 @@ void setup() {
  */
 void loop() {
   //state 0, set rising_edge_a.
-  rpm_signal = digitalRead(rpm_pin); 
+  rpm_signal = !digitalRead(rpm_pin);
+  //Serial.println(rpm_signal); 
   if(rpm_signal == HIGH && (edge_a == true && edge_b == false && reset == false)){
     rising_edge_a = micros();
     edge_a = false;
