@@ -41,7 +41,6 @@ void set_variable_narrow_signal(int val){
   
 }
 void setup() {
-  //delay(15000);
   //Serial.begin(9600);
   analogReference(DEFAULT);
   pinMode(analog_out, OUTPUT);
@@ -61,6 +60,6 @@ void loop() {
     set_narrow_signal(ox_val);
   }
   else{
-    analogWrite(analog_out, 100);
+    analogWrite(analog_out, 50);
   }
 }
