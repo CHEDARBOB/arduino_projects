@@ -21,17 +21,19 @@ int range = lean_max - rich_max;
 
 void set_narrow_signal(int val){
   if(val < rich){
-    analogWrite(analog_out, 200); //~850mV duty cycle
+    analogWrite(analog_out, 100); //~Meh duty cycle
     //Serial.print("rich ");
     //Serial.println(val);
+    digitalWrite(LED_BUILTIN, LOW);
   }
   else if(val > lean){
     //Serial.print("Lean ");
     //Serial.println(val);
-    analogWrite(analog_out, 0); //~175 mV
+    analogWrite(analog_out, 0); //~0 mV
+    digitalWrite(LED_BUILTIN, LOW);
   }
   else{
-    analogWrite(analog_out, 100);
+    digitalWrite(LED_BUILTIN, HIGH);
   }
   
 }
@@ -43,6 +45,7 @@ void setup() {
   //Serial.begin(9600);
   analogReference(DEFAULT);
   pinMode(analog_out, OUTPUT);
+  pinMode(LED_BUILTIN, OUTPUT);
 }
 /*
  * narrowband sim
