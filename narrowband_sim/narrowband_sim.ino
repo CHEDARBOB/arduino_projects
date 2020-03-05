@@ -10,32 +10,37 @@ int max_narrowband_voltage = 1000; //mV
 int analog_pin = A0;
 int analog_out = 9;
 int ox_val = 0;
+int temp = 0;
 //Wideband magic numbers
-int rich = 650;
+int rich = 660;
 int lean = 670;
 int stoich = 614;
 //Narrow max AFR
-int rich_max = 358; 
-int lean_max = 920; 
+int rich_max = 630; 
+int lean_max = 700; 
 int range = lean_max - rich_max;
 
 void set_narrow_signal(int val){
+  //mixter is rich
   if(val < rich){
-    analogWrite(analog_out, 100); //~Meh duty cycle
+    temp = 135;
     //Serial.print("rich ");
     //Serial.println(val);
-    digitalWrite(LED_BUILTIN, LOW);
+    if(val < rich_max){
+      temp = 195;
+    }
+    analogWrite(analog_out, temp);
   }
+  //mixter is lean
   else if(val > lean){
     //Serial.print("Lean ");
+    temp = 20;
     //Serial.println(val);
-    analogWrite(analog_out, 0); //~0 mV
-    digitalWrite(LED_BUILTIN, LOW);
-  }
-  else{
-    digitalWrite(LED_BUILTIN, HIGH);
-  }
-  
+    if(val > lean_max){
+      temp = 0;
+    }
+    analogWrite(analog_out, temp);
+  }   
 }
 void set_variable_narrow_signal(int val){
   
@@ -44,13 +49,11 @@ void setup() {
   //Serial.begin(9600);
   analogReference(DEFAULT);
   pinMode(analog_out, OUTPUT);
-  pinMode(LED_BUILTIN, OUTPUT);
 }
 /*
  * narrowband sim
  */
 void loop() {
-  //delay(100);
   //583 ~= 14.07 rich condition
   //614 ~= 14.7 stoich
   //646 ~= 14.98 lean condition
@@ -60,6 +63,6 @@ void loop() {
     set_narrow_signal(ox_val);
   }
   else{
-    analogWrite(analog_out, 50);
+    analogWrite(analog_out, 85);
   }
 }
