@@ -12,16 +12,16 @@ int analog_out = 9;
 int ox_val = 0;
 int temp = 0;
 //Wideband magic numbers
-int rich = 660;
-int lean = 670;
-int stoich = 614;
+int rich = 628;
+int lean = 646;
+int stoich = ;
 //Narrow max AFR
-int rich_max = 630; 
-int lean_max = 700; 
+int rich_max = 611; 
+int lean_max = 662; 
 int range = lean_max - rich_max;
 
 void set_narrow_signal(int val){
-  //mixter is rich
+  //mixture is rich
   if(val < rich){
     temp = 135;
     //Serial.print("rich ");
@@ -31,10 +31,10 @@ void set_narrow_signal(int val){
     }
     analogWrite(analog_out, temp);
   }
-  //mixter is lean
+  //mixture is lean
   else if(val > lean){
     //Serial.print("Lean ");
-    temp = 20;
+    temp = 10;
     //Serial.println(val);
     if(val > lean_max){
       temp = 0;
