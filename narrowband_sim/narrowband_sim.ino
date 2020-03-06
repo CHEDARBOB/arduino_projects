@@ -27,7 +27,7 @@ void set_narrow_signal(int val){
     //Serial.println(val);
     temp = 135;
     if(val < rich_max){
-      temp = 175;
+      temp = 180;
     }
     analogWrite(analog_out, temp);
   }
@@ -40,7 +40,11 @@ void set_narrow_signal(int val){
       temp = 0;
     }
     analogWrite(analog_out, temp);
-  }   
+  }
+  else{
+    Serial.print("Stioch ");   
+    analogWrite(analog_out, 100);
+  }
 }
 void setup() {
   Serial.begin(9600);
