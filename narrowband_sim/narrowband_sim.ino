@@ -13,6 +13,7 @@ int ox_val = 0;
 int offset_ox_val = 0;
 int temp = 0;
 int o2_signal = 0;
+int magnitude = 0;
 //Wideband magic numbers
 int rich = 630; //AFR ~14.6
 int rich_2 = 576; //14
@@ -25,18 +26,19 @@ int afr_range = 100;
 int set_magnitude(int offset, int afr){
   temp = abs(stoich - afr);
   magnitude = offset - (afr_range / temp);
-  return magnitude
+  return magnitude;
 }
 void set_narrow_signal(int val){
   //rich
-  if(val < soich){
-    o2_signal = 255*set_magnitude(0, val)
+  if(val < stoich){
+    o2_signal = 255*set_magnitude(0, val);
   }
   //lean
   else{
-    o2_signal = 255*set_magnitude(1, val)
+    o2_signal = 255*set_magnitude(1, val);
   }
-  Serial.print(o2_signal;)
+  Serial.print(o2_signal);
+  analogWrite(o2_signal, analog_out);
 }
 void setup() {
   Serial.begin(9600);
