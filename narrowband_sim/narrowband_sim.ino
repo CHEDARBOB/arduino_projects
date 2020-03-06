@@ -26,18 +26,19 @@ int afr_range = 100;
 int set_magnitude(int offset, int afr){
   temp = abs(stoich - afr);
   magnitude = offset - (afr_range / temp);
-  return magnitude;
+  return abs(magnitude);
 }
 void set_narrow_signal(int val){
   //rich
   if(val < stoich){
-    o2_signal = 255*set_magnitude(0, val);
+    o2_signal = 200*set_magnitude(0, val);
   }
   //lean
   else{
     o2_signal = 255*set_magnitude(1, val);
   }
-  Serial.print(o2_signal);
+  Serial.print(" ");
+  Serial.println(o2_signal);
   analogWrite(o2_signal, analog_out);
 }
 void setup() {
@@ -52,7 +53,7 @@ void loop() {
   //583 ~= 14.07 rich condition
   //614 ~= 14.7 stoich
   //646 ~= 14.98 lean condition
-  Serial.println(ox_val);
+  Serial.print(ox_val);
   ox_val = analogRead(analog_pin);
   if(ox_val < (stoich - afr_range)){
     offset_ox_val = stoich - 100;
