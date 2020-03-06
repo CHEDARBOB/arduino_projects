@@ -35,7 +35,7 @@ void set_narrow_signal(int val){
   }
   //lean
   else{
-    o2_signal = 255*set_magnitude(1, val);
+    o2_signal = 200*set_magnitude(1, val);
   }
   Serial.print(" ");
   Serial.println(o2_signal);
