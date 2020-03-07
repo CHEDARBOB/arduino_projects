@@ -38,11 +38,11 @@ void set_narrow_signal(int val){
   }
   Serial.print(" ");
   Serial.println(o2_signal);
-  analogWrite(o2_signal, analog_out);
+  analogWrite(analog_out,o2_signal);
 }
 void setup() {
-  delay(20000);
-  Serial.begin(9600);
+  //delay(20000);
+  //Serial.begin(9600);
   analogReference(DEFAULT);
   pinMode(analog_out, OUTPUT);
 }
