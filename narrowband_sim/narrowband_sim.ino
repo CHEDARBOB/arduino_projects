@@ -8,7 +8,7 @@ int max_narrowband_voltage = 1000; //mV
 */
 
 int analog_pin = A0;
-int analog_out = 9;
+int analog_out = 6;
 int ox_val = 0;
 int temp = 0;
 //Wideband magic numbers
