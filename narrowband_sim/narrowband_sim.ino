@@ -15,12 +15,8 @@ float temp = 0;
 int o2_signal = 0;
 float magnitude = 0;
 //Wideband magic numbers
-int rich = 630; //AFR ~14.6
-int rich_2 = 576; //14
-int lean = 644; //AFR ~14.8
-int lean_2 = 662; //15
 int stoich = 637; //14.7
-float afr_range = 100;
+float afr_range = 20;
 
 float set_magnitude(int afr){
  temp = stoich - afr;
@@ -30,19 +26,22 @@ float set_magnitude(int afr){
 void set_narrow_signal(int val){
   //rich
   if(val < stoich){
-    o2_signal = 150*set_magnitude(val);
+    o2_signal = 160*set_magnitude(val);
+    if(o2_signal < 120){
+      o2_signal = 130;
+    }
   }
   //lean
   else{
-    o2_signal = 70-(70*set_magnitude(val));
+    o2_signal = 40-(40*set_magnitude(val));
   }
   Serial.print(" ");
   Serial.println(o2_signal);
-  analogWrite(analog_out,o2_signal);
+  analogWrite(analog_out, o2_signal);
 }
 void setup() {
   //delay(20000);
-  //Serial.begin(9600);
+  Serial.begin(9600);
   analogReference(DEFAULT);
   pinMode(analog_out, OUTPUT);
 }
@@ -50,17 +49,17 @@ void setup() {
  * narrowband sim
  */
 void loop() {
-  //583 ~= 14.07 rich condition
-  //614 ~= 14.7 stoich
-  //646 ~= 14.98 lean condition
+  //610 ~= 14.39 rich condition
+  //637 ~= 14.7 stoich
+  //665 ~= 15.03 lean condition
   ox_val = analogRead(analog_pin);
   Serial.print(ox_val);
   if(ox_val < (stoich - afr_range)){
-    offset_ox_val = stoich - 100;
+    offset_ox_val = stoich - afr_range;
     set_narrow_signal(offset_ox_val);
   }
   else if(ox_val > (stoich + afr_range)){
-    offset_ox_val = stoich + 100;
+    offset_ox_val = stoich + afr_range;
     set_narrow_signal(offset_ox_val);
   }
   else{
