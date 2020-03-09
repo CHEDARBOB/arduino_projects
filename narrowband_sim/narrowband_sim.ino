@@ -9,10 +9,12 @@ int max_narrowband_voltage = 1000; //mV
 
 int analog_pin = A0;
 int analog_out = 9;
-int ox_val = 0;
+int analog_val = 0;
 int offset_ox_val = 0;
 float temp = 0;
 int o2_signal = 0;
+float _vol = 0.0;
+float afr = 0.0;
 float aem_vol_num = 2.375;
 float aem_offset_num = 7.3125;
 float nar_voltage = 0;
@@ -47,6 +49,7 @@ void loop() {
   //637 ~= 14.7 stoich
   //665 ~= 15.03 lean condition
   analog_val = analogRead(analog_pin);
-  Serial.print(ox_val);
+  Serial.print(analog_val);
   _vol = (analog_val / afr_range) * 5;
+  
 }
