@@ -17,21 +17,30 @@ float _vol = 0.0;
 float afr = 0.0;
 float aem_vol_num = 2.375;
 float aem_offset_num = 7.3125;
-float nar_voltage = 0;
+float nar_voltage = 0.0;
 float magnitude = 0;
 //Wideband magic numbers
 int stoich = 637; //14.7
 float afr_range = 1024;
 
 
-float calc_afr(int voltage){
+float calc_afr(float voltage){
  afr = (aem_vol_num * voltage) + aem_offset_num;
+ if(afr < 14.0){
+   afr = 14;
+ }
+ else if(afr > 15.2){
+  afr = 15.2;
+ }
+ Serial.print(" ");
+ Serial.print(afr);
  return afr;
 }
-void set_narrow_signal(int afr){
-  nar_voltage = (-0.77*afr) + 11.77;
-  o2_signal = nar_voltage * 255;
+void set_narrow_signal(float _afr){
   Serial.print(" ");
+  nar_voltage = (-0.83*_afr) + 12.67;
+  //Serial.println(nar_voltage);
+  o2_signal = 242*nar_voltage;
   Serial.println(o2_signal);
   analogWrite(analog_out, o2_signal);
 }
@@ -49,7 +58,8 @@ void loop() {
   //637 ~= 14.7 stoich
   //665 ~= 15.03 lean condition
   analog_val = analogRead(analog_pin);
-  Serial.print(analog_val);
   _vol = (analog_val / afr_range) * 5;
-  
+  Serial.print(_vol);
+  afr = calc_afr(_vol);
+  set_narrow_signal(afr);
 }
