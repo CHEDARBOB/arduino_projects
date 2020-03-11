@@ -1,5 +1,5 @@
 int analog_pin = A0;
-int analog_out = 6;
+int analog_out = 9;
 int analog_val = 0;
 int count = 0;
 int o2_signal = 0;
@@ -14,22 +14,23 @@ float afr_range = 1024;
 
 float calc_afr(float voltage){
  afr = (aem_vol_num * voltage) + aem_offset_num;
- if(afr < 14.6){
-   afr = 14.6;
+ if(afr < 14.20){
+   afr = 14.20;
  }
- else if(afr > 14.8){
-  afr = 14.8;
+ else if(afr > 15.20){
+  afr = 15.20;
  }
- Serial.print(" ");
- Serial.print(afr);
+ //Serial.print(" ");
+ //Serial.print(afr);
  return afr;
 }
 void set_narrow_signal(float _afr){
   Serial.print(" ");
-  nar_voltage = abs((-4.62*_afr) + 68.50);
-  Serial.print(nar_voltage);
-  Serial.print(" ");
-  //Serial.println(nar_voltage);
+  //nar_voltage = abs((-4.62*_afr) + 68.50);
+  //nar_voltage = abs((-2*_afr) + 30.4); //14.7 -- 15.2
+  nar_voltage = abs((-1.0*_afr) + 15.2); //14.2 -- 15.2
+  //Serial.print(nar_voltage);
+  //Serial.print(" ");
   o2_signal = 255*nar_voltage;
   Serial.println(o2_signal);
   analogWrite(analog_out, o2_signal);
@@ -47,9 +48,11 @@ void loop() {
   //610 ~= 14.39 rich condition
   //637 ~= 14.7 stoich
   //665 ~= 15.03 lean condition
-  analog_val = analogRead(analog_pin); 
+  analog_val = analogRead(analog_pin);
+  Serial.print(analog_val);
+  //Serial.print(" "); 
   _vol = (analog_val / afr_range) * 5;
-  Serial.print(_vol);
+  //Serial.print(_vol);
   afr = calc_afr(_vol);
   set_narrow_signal(afr);
 }
