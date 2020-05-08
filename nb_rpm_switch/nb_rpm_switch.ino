@@ -19,11 +19,11 @@ unsigned long calc_rpm(unsigned long _edge_a, unsigned long _edge_b){
 }
 void open_valve(int _rpm){
   if(_rpm > desired_rpm){
-    digitalWrite(vics_signal, HIGH);
+    digitalWrite(vics_signal, LOW);
     digitalWrite(vics_LED, HIGH);
   }
   else{
-    digitalWrite(vics_signal, LOW);
+    digitalWrite(vics_signal, HIGH);
     digitalWrite(vics_LED, LOW);
   }
 }
@@ -34,7 +34,7 @@ void setup() {
   pinMode(vics_signal, OUTPUT);
   pinMode(vics_LED, OUTPUT);
   digitalWrite(vics_LED, LOW);
-  digitalWrite(vics_signal, LOW);
+  digitalWrite(vics_signal, HIGH);
 }
 /*
  * rpm_signal fires twice per engine revolution. 
