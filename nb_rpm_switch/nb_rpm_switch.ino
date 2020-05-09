@@ -4,7 +4,7 @@ bool reset = false;
 const int rpm_pin = 3;
 const int vics_signal = 4;
 const int vics_LED = LED_BUILTIN;
-const int desired_rpm = 5200;
+const int desired_rpm = 1400;
 int rpm_signal = LOW;
 int rpm = 0;
 unsigned long rising_edge_a = 0;
@@ -15,6 +15,8 @@ unsigned long calc_rpm(unsigned long _edge_a, unsigned long _edge_b){
   //period of 5.979 ms = ~5000 rpm
   float _period = _edge_b - _edge_a;
   int _rpm = ((60000*1000)/(_period*2));
+  Serial.print("rpm: ");
+  Serial.println(_rpm);
   return _rpm;
 }
 void open_valve(int _rpm){
@@ -34,7 +36,7 @@ void setup() {
   pinMode(vics_signal, OUTPUT);
   pinMode(vics_LED, OUTPUT);
   digitalWrite(vics_LED, LOW);
-  digitalWrite(vics_signal, HIGH);
+  digitalWrite(vics_signal, LOW);
 }
 /*
  * rpm_signal fires twice per engine revolution. 
@@ -50,6 +52,8 @@ void setup() {
  * VICS signal is set to LOW or HIGH based on engine rpm.
  */
 void loop() {
+  //Serial.print("rpm signal: ");
+  //Serial.println(digitalRead(rpm_pin));
   //state 0, set rising_edge_a.
   rpm_signal = !digitalRead(rpm_pin);
   //Serial.println(rpm_signal); 
