@@ -4,7 +4,7 @@ bool reset = false;
 const int rpm_pin = 3;
 const int vics_signal = 4;
 const int vics_LED = LED_BUILTIN;
-const int desired_rpm = 1400;
+const int desired_rpm = 50000;
 int rpm_signal = LOW;
 int rpm = 0;
 unsigned long rising_edge_a = 0;
@@ -21,11 +21,11 @@ unsigned long calc_rpm(unsigned long _edge_a, unsigned long _edge_b){
 }
 void open_valve(int _rpm){
   if(_rpm > desired_rpm){
-    digitalWrite(vics_signal, LOW);
+    digitalWrite(vics_signal, HIGH);
     digitalWrite(vics_LED, HIGH);
   }
   else{
-    digitalWrite(vics_signal, HIGH);
+    digitalWrite(vics_signal, LOW);
     digitalWrite(vics_LED, LOW);
   }
 }
