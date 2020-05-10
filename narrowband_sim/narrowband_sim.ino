@@ -37,7 +37,7 @@ void set_narrow_signal(float _afr){
 }
 void setup() {
   //delay(20000);
-  Serial.begin(115200);
+  //Serial.begin(9600);
   analogReference(DEFAULT);
   pinMode(analog_out, OUTPUT);
 }
