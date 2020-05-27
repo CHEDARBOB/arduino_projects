@@ -30,23 +30,23 @@ float afr_range = 1024;
 //afr helper functions
 float calc_afr(float voltage){
  afr = (aem_vol_num * voltage) + aem_offset_num;
- if(afr < 14.20){
-   afr = 14.20;
+ if(afr < 14.30){
+   afr = 14.30;
  }
  else if(afr > 15.00){
   afr = 15.00;
  }
- //Serial.print(" ");
- //Serial.print(afr);
+ Serial.print(" ");
+ Serial.print(afr);
  return afr;
 }
 void set_narrow_signal(float _afr){
-  //Serial.print(" ");
+  Serial.print(" ");
   //nar_voltage = abs((-1.0*_afr) + 15.20); //14.3 -- 15.0
-  nar_voltage = abs((-1.29*_afr) + 19.29); //14.3 -- 15.0
+  nar_voltage = abs((-1.214*_afr) + 18.314); //14.3 -- 15.0
   //nar_voltage = abs((-1.0*_afr) + 15.2); //14.2 -- 15.2
-  //Serial.print(nar_voltage);
-  //Serial.print(" ");
+  Serial.print(nar_voltage);
+  Serial.print(" ");
   o2_signal = 255*nar_voltage;
   Serial.println(o2_signal);
   analogWrite(analog_out, o2_signal);
@@ -75,7 +75,7 @@ void open_valve(int _rpm){
 }
 
 void setup() {
-  //Serial.begin(9600);
+  Serial.begin(9600);
   pinMode(rpm_pin, INPUT);
   pinMode(vics_signal, OUTPUT);
   pinMode(vics_LED, OUTPUT);
