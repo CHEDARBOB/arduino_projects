@@ -22,14 +22,16 @@ float _vol = 0.0;
 float afr = 0.0;
 //Wideband magic numbers
 float aem_vol_num = 2.375;
+float mod_vol_num = 2.5;
 float aem_offset_num = 7.3125;
+float mod_offset_num = 0;
 float nar_voltage = 0.0;
 float afr_range = 1024;
 /////////////////////////
 /////////////////////////
 //afr helper functions
 float calc_afr(float voltage){
- afr = (aem_vol_num * voltage) + aem_offset_num;
+ afr = (mod_vol_num * voltage) + aem_offset_num;
  if(afr < 14.30){
    afr = 14.30;
  }
