@@ -5,7 +5,7 @@ bool reset = false;
 const int rpm_pin = 3;
 const int vics_signal = 4;
 const int vics_LED = LED_BUILTIN;
-const int desired_rpm = 4700;
+const int desired_rpm = 4000;
 int rpm_signal = LOW;
 int rpm = 0;
 unsigned long rising_edge_a = 0;
@@ -22,7 +22,7 @@ float _vol = 0.0;
 float afr = 0.0;
 //Wideband magic numbers
 float aem_vol_num = 2.375;
-float mod_vol_num = 2.5;
+float mod_vol_num = 2.55;
 float aem_offset_num = 7.3125;
 float mod_offset_num = 0;
 float nar_voltage = 0.0;
@@ -38,19 +38,19 @@ float calc_afr(float voltage){
  else if(afr > 15.00){
   afr = 15.00;
  }
- Serial.print(" ");
- Serial.print(afr);
+ //Serial.print(" ");
+ //Serial.print(afr);
  return afr;
 }
 void set_narrow_signal(float _afr){
-  Serial.print(" ");
+  //Serial.print(" ");
   //nar_voltage = abs((-1.0*_afr) + 15.20); //14.3 -- 15.0
   nar_voltage = abs((-1.214*_afr) + 18.314); //14.3 -- 15.0
   //nar_voltage = abs((-1.0*_afr) + 15.2); //14.2 -- 15.2
-  Serial.print(nar_voltage);
-  Serial.print(" ");
+  //Serial.print(nar_voltage);
+  //Serial.print(" ");
   o2_signal = 255*nar_voltage;
-  Serial.println(o2_signal);
+  //Serial.println(o2_signal);
   analogWrite(analog_out, o2_signal);
 }
 /////////////////////////////////
@@ -67,22 +67,22 @@ unsigned long calc_rpm(unsigned long _edge_a, unsigned long _edge_b){
 }
 void open_valve(int _rpm){
   if(_rpm > desired_rpm){
-    digitalWrite(vics_signal, HIGH);
-    digitalWrite(vics_LED, HIGH);
-  }
-  else{
     digitalWrite(vics_signal, LOW);
     digitalWrite(vics_LED, LOW);
+  }
+  else{
+    digitalWrite(vics_signal, HIGH);
+    digitalWrite(vics_LED, HIGH);
   }
 }
 
 void setup() {
-  Serial.begin(9600);
+  //Serial.begin(9600);
   pinMode(rpm_pin, INPUT);
   pinMode(vics_signal, OUTPUT);
   pinMode(vics_LED, OUTPUT);
-  digitalWrite(vics_LED, LOW);
-  digitalWrite(vics_signal, LOW);
+  digitalWrite(vics_LED, HIGH);
+  digitalWrite(vics_signal, HIGH);
   //////////////////////////////
   //////////////////////////////
   analogReference(DEFAULT);
