@@ -5,7 +5,7 @@ bool reset = false;
 const int rpm_pin = 3;
 const int vics_signal = 4;
 const int vics_LED = LED_BUILTIN;
-const int desired_rpm = 4000;
+const int desired_rpm = 4200;
 int rpm_signal = LOW;
 int rpm = 0;
 unsigned long rising_edge_a = 0;
@@ -22,7 +22,7 @@ float _vol = 0.0;
 float afr = 0.0;
 //Wideband magic numbers
 float aem_vol_num = 2.375;
-float mod_vol_num = 2.55;
+float mod_vol_num = 2.6;
 float aem_offset_num = 7.3125;
 float mod_offset_num = 0;
 float nar_voltage = 0.0;
@@ -35,11 +35,11 @@ float calc_afr(float voltage){
  if(afr < 14.30){
    afr = 14.30;
  }
- else if(afr > 15.00){
+ else if(afr > 14.50){
   afr = 15.00;
  }
- //Serial.print(" ");
- //Serial.print(afr);
+ Serial.print(" ");
+ Serial.println(afr);
  return afr;
 }
 void set_narrow_signal(float _afr){
@@ -50,7 +50,7 @@ void set_narrow_signal(float _afr){
   //Serial.print(nar_voltage);
   //Serial.print(" ");
   o2_signal = 255*nar_voltage;
-  //Serial.println(o2_signal);
+  Serial.print(nar_voltage);
   analogWrite(analog_out, o2_signal);
 }
 /////////////////////////////////
@@ -77,7 +77,17 @@ void open_valve(int _rpm){
 }
 
 void setup() {
-  //Serial.begin(9600);
+  Serial.begin(9600);
+  //startup
+  int count = 0;
+  while(count < 25){
+    set_narrow_signal(14.90);
+    delay(550);
+    set_narrow_signal(14.3);
+    delay(500);
+    count++;
+  }
+  ///////////////////
   pinMode(rpm_pin, INPUT);
   pinMode(vics_signal, OUTPUT);
   pinMode(vics_LED, OUTPUT);
