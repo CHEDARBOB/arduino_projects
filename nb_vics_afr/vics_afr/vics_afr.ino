@@ -31,23 +31,26 @@ float afr_range = 1024;
 /////////////////////////
 //afr helper functions
 float calc_afr(float voltage){
- afr = (mod_vol_num * voltage) + aem_offset_num;
- if(afr < 14.3){
-   afr = 14.3;
+ afr = (aem_vol_num * voltage) + aem_offset_num;
+ //Serial.print(afr);
+ //Serial.print(" ");
+ if(afr < 14.0){
+   afr = 14.0;
  }
- else if(afr > 14.7){
-  afr = 14.7;
+ else if(afr > 15.0){
+  afr = 15.0;
  }
- Serial.print(afr);
- Serial.print(" ");
+ //Serial.print(afr);
+ //Serial.print(" ");
  return afr;
 }
 void set_narrow_signal(float _afr){
-  nar_voltage = abs((-2.25*_afr) + 33.125); //14.3 -- 15.0 -2.25x + 33.125
-  Serial.print(nar_voltage);
-  Serial.print(" ");
+  //nar_voltage = (-2.25*_afr) + 33.125; //14.3 -- 14.7 -2.25x + 33.125
+  nar_voltage = ( -0.90*_afr) + 13.55; //14.0 -- 15.0
+  //Serial.print(nar_voltage);
+  //Serial.print(" ");
   o2_signal = 255*nar_voltage;
-  Serial.println(o2_signal);
+  //Serial.println(o2_signal);
   analogWrite(analog_out, o2_signal);
 }
 /////////////////////////////////
@@ -55,9 +58,8 @@ void set_narrow_signal(float _afr){
 // rpm helper functions
 // Calculate rpm based on half rotation (180deg). 
 unsigned long calc_rpm(unsigned long _edge_a, unsigned long _edge_b){
-  //period of 5.979 ms = ~5000 rpm
   float _period = _edge_b - _edge_a;
-  int _rpm = ((60000*1000)/(_period*2));
+  int _rpm = ((60000000)*(_period+_period));
   //Serial.print("rpm: ");
   //Serial.println(_rpm);
   return _rpm;
@@ -108,7 +110,7 @@ void loop() {
   //Serial.print(analog_val);
   //Serial.print(" "); 
   _vol = (analog_val / afr_range) * 5;
-  //Serial.print(_vol);
+  //Serial.println(_vol);
   afr = calc_afr(_vol);
   set_narrow_signal(afr);
   /////////////////////////////////
