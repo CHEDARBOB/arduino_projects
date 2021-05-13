@@ -10,8 +10,7 @@ int rpm_signal = LOW;
 int rpm = 0;
 unsigned long rising_edge_a = 0;
 unsigned long rising_edge_b = 0;
-/////////////////////////////////
-/////////////////////////////////
+
 // rpm helper functions
 // Calculate rpm based on half rotation (180deg).
 unsigned long calc_rpm(unsigned long _edge_a, unsigned long _edge_b) {
