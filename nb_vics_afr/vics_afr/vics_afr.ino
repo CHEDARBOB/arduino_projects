@@ -5,7 +5,7 @@ bool reset = false;
 const int rpm_pin = 3;
 const int vics_signal = 4;
 const int vics_LED = LED_BUILTIN;
-const int desired_rpm = 4400;
+const int desired_rpm = 4500;
 int rpm_signal = LOW;
 int rpm = 0;
 unsigned long rising_edge_a = 0;
@@ -30,46 +30,46 @@ float afr_range = 1024;
 /////////////////////////
 /////////////////////////
 //afr helper functions
-float calc_afr(float voltage){
- afr = (aem_vol_num * voltage) + aem_offset_num;
- //Serial.print(afr);
- //Serial.print(" ");
- if(afr < 14.0){
-   afr = 14.0;
- }
- else if(afr > 15.0){
-  afr = 15.0;
- }
- //Serial.print(afr);
- //Serial.print(" ");
- return afr;
+float calc_afr(float voltage) {
+  afr = (aem_vol_num * voltage) + aem_offset_num;
+  //Serial.print(afr);
+  //Serial.print(" ");
+  if (afr < 14.0) {
+    afr = 14.0;
+  }
+  else if (afr > 15.0) {
+    afr = 15.0;
+  }
+  //Serial.print(afr);
+  //Serial.print(" ");
+  return afr;
 }
-void set_narrow_signal(float _afr){
+void set_narrow_signal(float _afr) {
   //nar_voltage = (-2.25*_afr) + 33.125; //14.3 -- 14.7 -2.25x + 33.125
-  nar_voltage = ( -0.90*_afr) + 13.55; //14.0 -- 15.0
+  nar_voltage = ( -0.90 * _afr) + 13.55; //14.0 -- 15.0
   //Serial.print(nar_voltage);
   //Serial.print(" ");
-  o2_signal = 255*nar_voltage;
+  o2_signal = 255 * nar_voltage;
   //Serial.println(o2_signal);
   analogWrite(analog_out, o2_signal);
 }
 /////////////////////////////////
 /////////////////////////////////
 // rpm helper functions
-// Calculate rpm based on half rotation (180deg). 
-unsigned long calc_rpm(unsigned long _edge_a, unsigned long _edge_b){
+// Calculate rpm based on half rotation (180deg).
+unsigned long calc_rpm(unsigned long _edge_a, unsigned long _edge_b) {
   float _period = _edge_b - _edge_a;
-  int _rpm = ((60000000)*(_period+_period));
+  int _rpm = ((60000000) * (_period + _period));
   //Serial.print("rpm: ");
   //Serial.println(_rpm);
   return _rpm;
 }
-void open_valve(int _rpm){
-  if(_rpm > desired_rpm){
+void open_valve(int _rpm) {
+  if (_rpm > desired_rpm && vics_signal != LOW) {
     digitalWrite(vics_signal, LOW);
     digitalWrite(vics_LED, LOW);
   }
-  else{
+  else if (_rpm < desired_rpm && vics_signal != HIGH){
     digitalWrite(vics_signal, HIGH);
     digitalWrite(vics_LED, HIGH);
   }
@@ -85,22 +85,21 @@ void setup() {
   digitalWrite(vics_signal, HIGH);
   //////////////////////////////
   //////////////////////////////
-  analogReference(DEFAULT);
   pinMode(analog_out, OUTPUT);
 }
 /*
- * rpm_signal fires twice per engine revolution. 
- * take the period from rising edge to rising edge. 
- * 
- * Four states: 
- * First, HIGH rpm signal save current time in microseconds.
- * Second, LOW rpm signal, this ensures the system does not duplicate 
- * data for a singleton rpm signal.
- * Third, Following rpm HIGH signal. save current time in microseconds.
- * This represents the engine has traveled 180 degrees.
- * Fourth, following LOW rpm signal. bool states are reset and rpm is calculated.
- * VICS signal is set to LOW or HIGH based on engine rpm.
- */
+   rpm_signal fires twice per engine revolution.
+   take the period from rising edge to rising edge.
+
+   Four states:
+   First, HIGH rpm signal save current time in microseconds.
+   Second, LOW rpm signal, this ensures the system does not duplicate
+   data for a singleton rpm signal.
+   Third, Following rpm HIGH signal. save current time in microseconds.
+   This represents the engine has traveled 180 degrees.
+   Fourth, following LOW rpm signal. bool states are reset and rpm is calculated.
+   VICS signal is set to LOW or HIGH based on engine rpm.
+*/
 void loop() {
   //afr control
   //610 ~= 14.39 rich condition
@@ -108,7 +107,7 @@ void loop() {
   //665 ~= 15.03 lean condition
   analog_val = analogRead(analog_pin);
   //Serial.print(analog_val);
-  //Serial.print(" "); 
+  //Serial.print(" ");
   _vol = (analog_val / afr_range) * 5;
   //Serial.println(_vol);
   afr = calc_afr(_vol);
@@ -120,28 +119,28 @@ void loop() {
   //Serial.println(digitalRead(rpm_pin));
   //state 0, set rising_edge_a.
   rpm_signal = !digitalRead(rpm_pin);
-  //Serial.println(rpm_signal); 
-  if(rpm_signal == HIGH && (edge_a == true && edge_b == false && reset == false)){
+  //Serial.println(rpm_signal);
+  if (rpm_signal == HIGH && (edge_a == true && edge_b == false && reset == false)) {
     rising_edge_a = micros();
     edge_a = false;
   }
   //state 1, low signal
-  else if(rpm_signal == LOW && (edge_a == false && edge_b == false && reset == false)){ 
+  else if (rpm_signal == LOW && (edge_a == false && edge_b == false && reset == false)) {
     edge_b = true;
   }
   //state 2, following High signal, set rising_edge_b (1/2 engine rotation)
-  else if(rpm_signal == HIGH && (edge_a == false && edge_b == true && reset == false)){
+  else if (rpm_signal == HIGH && (edge_a == false && edge_b == true && reset == false)) {
     rising_edge_b = micros();
     edge_b = false;
     reset = true;
   }
   //state 3, reset, calculate/check rpm to open/close VICS valve.
-  else if(rpm_signal == LOW && (edge_a == false && edge_b == false && reset == true)){
+  else if (rpm_signal == LOW && (edge_a == false && edge_b == false && reset == true)) {
     edge_a = true;
     reset = false;
-    //rpm pin is LOW and both edges are valid. 
+    //rpm pin is LOW and both edges are valid.
     //If overflow: entire sample ignored.
-    if(rising_edge_a < rising_edge_b){
+    if (rising_edge_a < rising_edge_b) {
       rpm = calc_rpm(rising_edge_a, rising_edge_b);
       open_valve(rpm);
     }
