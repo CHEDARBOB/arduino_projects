@@ -1,0 +1,166 @@
+EESchema Schematic File Version 4
+EELAYER 30 0
+EELAYER END
+$Descr A4 11693 8268
+encoding utf-8
+Sheet 1 1
+Title ""
+Date ""
+Rev ""
+Comp ""
+Comment1 ""
+Comment2 ""
+Comment3 ""
+Comment4 ""
+$EndDescr
+$Comp
+L power:+12V #PWR?
+U 1 1 5E478831
+P 6200 1150
+F 0 "#PWR?" H 6200 1000 50  0001 C CNN
+F 1 "+12V" H 6215 1323 50  0000 C CNN
+F 2 "" H 6200 1150 50  0001 C CNN
+F 3 "" H 6200 1150 50  0001 C CNN
+	1    6200 1150
+	1    0    0    -1  
+$EndComp
+$Comp
+L MCU_Module:Arduino_UNO_R3 A?
+U 1 1 5E47E899
+P 6300 3750
+F 0 "A?" H 6300 4931 50  0000 C CNN
+F 1 "Arduino_UNO_R3" H 6300 4840 50  0000 C CNN
+F 2 "Module:Arduino_UNO_R3" H 6300 3750 50  0001 C CIN
+F 3 "https://www.arduino.cc/en/Main/arduinoBoardUno" H 6300 3750 50  0001 C CNN
+	1    6300 3750
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:GND #PWR?
+U 1 1 5E4810BA
+P 6300 5350
+F 0 "#PWR?" H 6300 5100 50  0001 C CNN
+F 1 "GND" H 6305 5177 50  0000 C CNN
+F 2 "" H 6300 5350 50  0001 C CNN
+F 3 "" H 6300 5350 50  0001 C CNN
+	1    6300 5350
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	6300 4850 6300 5250
+Wire Wire Line
+	6200 4850 6200 5250
+Wire Wire Line
+	6200 5250 6300 5250
+Connection ~ 6300 5250
+Wire Wire Line
+	6300 5250 6300 5350
+Wire Wire Line
+	6400 4850 6400 5250
+Wire Wire Line
+	6400 5250 6300 5250
+$Comp
+L Isolator:LTV-847S U?
+U 1 1 5E4CA0B3
+P 4250 2500
+F 0 "U?" H 4250 2825 50  0000 C CNN
+F 1 "LTV-847S" H 4250 2734 50  0000 C CNN
+F 2 "Package_DIP:SMDIP-16_W9.53mm" H 4250 2200 50  0001 C CNN
+F 3 "http://www.us.liteon.com/downloads/LTV-817-827-847.PDF" H 3650 2950 50  0001 C CNN
+	1    4250 2500
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:R_US R1
+U 1 1 5E4D8845
+P 3200 2400
+F 0 "R1" V 2995 2400 50  0000 C CNN
+F 1 "10k" V 3086 2400 50  0000 C CNN
+F 2 "" V 3240 2390 50  0001 C CNN
+F 3 "~" H 3200 2400 50  0001 C CNN
+	1    3200 2400
+	0    1    1    0   
+$EndComp
+Wire Wire Line
+	3350 2400 3950 2400
+Wire Wire Line
+	2050 2400 3050 2400
+$Comp
+L power:GND #PWR?
+U 1 1 5E4E5755
+P 4250 2800
+F 0 "#PWR?" H 4250 2550 50  0001 C CNN
+F 1 "GND" H 4255 2627 50  0000 C CNN
+F 2 "" H 4250 2800 50  0001 C CNN
+F 3 "" H 4250 2800 50  0001 C CNN
+	1    4250 2800
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	4550 2600 4550 2800
+Wire Wire Line
+	4550 2800 4250 2800
+Wire Wire Line
+	3950 2600 3950 2800
+Wire Wire Line
+	3950 2800 4250 2800
+Connection ~ 4250 2800
+Wire Wire Line
+	5100 3450 5800 3450
+$Comp
+L Device:R_US R2
+U 1 1 5E4EDC30
+P 5350 1450
+F 0 "R2" V 5145 1450 50  0000 C CNN
+F 1 "4.7k" V 5236 1450 50  0000 C CNN
+F 2 "" V 5390 1440 50  0001 C CNN
+F 3 "~" H 5350 1450 50  0001 C CNN
+	1    5350 1450
+	0    1    1    0   
+$EndComp
+Wire Wire Line
+	5200 1450 5100 1450
+Wire Wire Line
+	5100 1450 5100 2400
+Wire Wire Line
+	4550 2400 5100 2400
+Connection ~ 5100 2400
+Wire Wire Line
+	5100 2400 5100 3450
+$Comp
+L Transistor_FET:2N7000 Q?
+U 1 1 5E506F30
+P 3750 3550
+F 0 "Q?" H 3955 3596 50  0000 L CNN
+F 1 "2N7000" H 3955 3505 50  0000 L CNN
+F 2 "Package_TO_SOT_THT:TO-92_Inline" H 3950 3475 50  0001 L CIN
+F 3 "https://www.fairchildsemi.com/datasheets/2N/2N7000.pdf" H 3750 3550 50  0001 L CNN
+	1    3750 3550
+	-1   0    0    -1  
+$EndComp
+Wire Wire Line
+	5800 3550 3950 3550
+Wire Wire Line
+	3650 3350 3650 3750
+Wire Wire Line
+	2050 3300 3650 3300
+Wire Wire Line
+	3650 3300 3650 3350
+Connection ~ 3650 3350
+Wire Wire Line
+	3650 3750 3650 5250
+Wire Wire Line
+	3650 5250 6200 5250
+Connection ~ 3650 3750
+Connection ~ 6200 5250
+Text Label 2350 2400 0    59   ~ 0
+IN_RPMCoilPack
+Text Label 2500 3300 0    59   ~ 0
+VICS_SEL_TO_GND
+Wire Wire Line
+	6200 1150 6200 2750
+Wire Wire Line
+	6500 2750 6500 1450
+Wire Wire Line
+	6500 1450 5500 1450
+$EndSCHEMATC
